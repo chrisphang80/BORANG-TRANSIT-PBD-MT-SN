@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>小学数学课堂评估记录系统 (PBD Transit Forms Year 1-6)</title>
+  <title>小学课堂评估记录系统 (PBD Transit Forms Year 1-6)</title>
   
   <!-- Tailwind CSS & Chart.js -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -39,12 +39,12 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-4">
       <div class="flex items-center space-x-3">
         <div id="nav-logo-container" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center border border-white/20 overflow-hidden">
-          <i class="fa-solid fa-school text-indigo-200 text-xl" id="nav-logo-fallback"></i>
+          <i class="fa-solid fa-graduation-cap text-indigo-200 text-xl" id="nav-logo-fallback"></i>
           <img id="nav-logo-img" class="w-full h-full object-contain hidden" alt="School Logo" />
         </div>
         <div>
-          <h1 class="text-lg font-bold tracking-wide" id="nav-school-name">SJK(C) KANG YAO 数学 PBD 评估系统</h1>
-          <p class="text-xs text-indigo-200" id="nav-sub-info">任课教师: LEE KIAT CHEW | 班级: 3M</p>
+          <h1 class="text-lg font-bold tracking-wide" id="nav-school-name">SJK(C) KANG YAO PBD 评估系统</h1>
+          <p class="text-xs text-indigo-200" id="nav-sub-info">科目: 科学 | 任课教师: LEE KIAT CHEW | 班级: 3M</p>
         </div>
       </div>
 
@@ -66,13 +66,25 @@
   <!-- Main Content Area -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
-    <!-- Global Controls Toolbar -->
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-6 flex flex-wrap items-center justify-between gap-4">
-      <div class="flex flex-wrap items-center gap-3">
+    <!-- Global Controls Toolbar (布局与宽度防挤压优化) -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-6 flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Left Filters Group -->
+      <div class="flex flex-wrap items-center gap-2.5 min-w-0">
+        
+        <!-- Subject Selector -->
+        <div class="flex-shrink-0">
+          <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1"><i class="fa-solid fa-book text-indigo-600"></i> 选择科目 (SUBJEK)</label>
+          <select id="subject-select" onchange="changeSubject(this.value)" class="bg-indigo-50 border border-indigo-200 rounded-lg px-2.5 py-1.5 text-sm font-bold text-indigo-900 focus:ring-2 focus:ring-indigo-500 max-w-[150px] truncate">
+            <option value="science" selected>科学 (Sains)</option>
+            <option value="math">数学 (Matematik)</option>
+          </select>
+        </div>
+
         <!-- Grade Selector -->
-        <div>
-          <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">选择年级 (Tahun)</label>
-          <select id="grade-select" onchange="changeGrade(this.value)" class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-sm font-bold text-indigo-900 focus:ring-2 focus:ring-indigo-500">
+        <div class="flex-shrink-0">
+          <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">选择年级 (TAHUN)</label>
+          <select id="grade-select" onchange="changeGrade(this.value)" class="bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm font-bold text-indigo-900 focus:ring-2 focus:ring-indigo-500 max-w-[160px] truncate">
             <option value="1">一年级 (Tahun 1)</option>
             <option value="2">二年级 (Tahun 2)</option>
             <option value="3" selected>三年级 (Tahun 3)</option>
@@ -82,32 +94,32 @@
           </select>
         </div>
 
-        <!-- Unit Selector -->
-        <div id="unit-select-container">
-          <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">评估单元 (Unit)</label>
-          <select id="unit-select" onchange="renderTransitTable()" class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-sm font-medium focus:ring-2 focus:ring-indigo-500">
+        <!-- Unit Selector (限制最大宽度并允许省略号，防止整行下掉) -->
+        <div id="unit-select-container" class="min-w-0">
+          <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">评估单元 (UNIT)</label>
+          <select id="unit-select" onchange="renderTransitTable()" class="bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm font-medium focus:ring-2 focus:ring-indigo-500 max-w-[210px] sm:max-w-[250px] truncate" title="点击选择单元">
             <!-- Dynamically populated -->
           </select>
         </div>
       </div>
 
-      <!-- Quick Action Buttons & Backup Controls -->
-      <div class="flex flex-wrap items-center gap-2">
-        <button onclick="openPopupPrintTransit()" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium shadow-sm transition flex items-center gap-1.5">
+      <!-- Quick Action Buttons & Backup Controls (flex-shrink-0 确保不缩放挤压) -->
+      <div class="flex flex-wrap items-center gap-1.5 flex-shrink-0">
+        <button onclick="openPopupPrintTransit()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs sm:text-sm font-medium shadow-sm transition flex items-center gap-1.5">
           <i class="fa-solid fa-print"></i> 打印 Borang Transit
         </button>
-        <button onclick="openPopupPrintSlips()" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium shadow-sm transition flex items-center gap-1.5">
+        <button onclick="openPopupPrintSlips()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs sm:text-sm font-medium shadow-sm transition flex items-center gap-1.5">
           <i class="fa-solid fa-file-invoice"></i> 打印个人报告单
         </button>
-        <button onclick="exportDataCSV()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-lg text-sm font-medium transition flex items-center gap-1">
+        <button onclick="exportDataCSV()" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-lg text-xs sm:text-sm font-medium transition flex items-center gap-1">
           <i class="fa-solid fa-file-excel text-emerald-600"></i> 导出 CSV
         </button>
         
         <!-- Backup & Restore Buttons -->
-        <button onclick="exportBackupJSON()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-lg text-sm font-medium transition flex items-center gap-1" title="下载所有班级和设置备份">
+        <button onclick="exportBackupJSON()" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-lg text-xs sm:text-sm font-medium transition flex items-center gap-1" title="下载所有科目、班级和设置备份">
           <i class="fa-solid fa-download text-indigo-600"></i> 导出备份
         </button>
-        <button onclick="document.getElementById('backup-file-input').click()" class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-lg text-sm font-medium transition flex items-center gap-1" title="上传恢复已保存的 JSON 备份文档">
+        <button onclick="document.getElementById('backup-file-input').click()" class="px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-lg text-xs sm:text-sm font-medium transition flex items-center gap-1" title="上传恢复已保存的 JSON 备份文档">
           <i class="fa-solid fa-upload"></i> 恢复备份
         </button>
         <input type="file" id="backup-file-input" accept=".json" onchange="importBackupJSON(event)" class="hidden">
@@ -120,7 +132,7 @@
       <!-- Unit Summary Card & Batch Score Bar -->
       <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 class="text-xl font-bold text-slate-900" id="current-unit-title">1.0 10 000以内的整数</h2>
+          <h2 class="text-xl font-bold text-slate-900" id="current-unit-title">加载中...</h2>
           <p class="text-xs text-slate-500 mt-0.5">勾选各学习标准 (SP) 或点击表头框批量勾选，右侧选择单元掌握级别 (TP1 - TP6)。</p>
         </div>
 
@@ -280,7 +292,7 @@
             <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
               <i class="fa-solid fa-lightbulb text-amber-500"></i> 单元专属课堂评估干预辅导建议 (Aktiviti Intervensi)
             </h3>
-            <p class="text-xs text-slate-500 mt-0.5">根据当前所选分析范围（单元概念）自动匹配的 DSKP 教学干预方案。</p>
+            <p class="text-xs text-slate-500 mt-0.5">根据当前所选科目与分析范围（单元概念）自动匹配的 DSKP 教学干预方案。</p>
           </div>
           <button onclick="openPopupPrintIntervention()" class="px-3.5 py-1.5 bg-slate-800 text-white rounded-lg text-xs font-medium hover:bg-slate-900 transition flex items-center gap-1.5">
             <i class="fa-solid fa-print"></i> 打印干预活动报告
@@ -450,91 +462,192 @@
   <!-- JAVASCRIPT APPLICATION LOGIC -->
   <script>
     /****************************************************************
-     * 1. CURRICULUM DATA DEFINITION (YEARS 1 TO 6)
+     * 1. CURRICULUM DATA DEFINITION (MATH & SCIENCE - YEARS 1 TO 6)
      ****************************************************************/
     const CURRICULUM_DATA = {
-      "1": {
-        title: "一年级数学 (Matematik Tahun 1)",
-        units: [
-          { id: "1.0", name: "1.0 100以内的整数", sp: ["1.1.1","1.2.1","1.2.2","1.3.1","1.4.1","1.5.1","1.5.2","1.6.1","1.7.1","1.8.1","1.9.1","1.9.2","1.10.1"] },
-          { id: "2.0", name: "2.0 基本运算", sp: ["2.1.1","2.1.2","2.1.3","2.2.1","2.2.2","2.3.1","2.3.2","2.4.1","2.4.2","2.5.1","2.6.1"] },
-          { id: "3.0", name: "3.0 分数", sp: ["3.1.1","3.2.1"] },
-          { id: "4.0", name: "4.0 钱币", sp: ["4.1.1","4.1.2","4.1.3","4.2.1","4.2.2","4.3.1"] },
-          { id: "5.0", name: "5.0 时间与时刻", sp: ["5.1.1","5.1.2","5.1.3","5.1.4","5.2.1","5.2.2","5.2.3","5.3.1"] },
-          { id: "6.0", name: "6.0 度量衡", sp: ["6.1.1","6.1.2","6.1.3","6.2.1"] },
-          { id: "7.0", name: "7.0 空间", sp: ["7.1.1","7.1.2","7.1.3","7.1.4","7.2.1","7.2.2","7.2.3","7.2.4","7.3.1"] },
-          { id: "8.0", name: "8.0 数据处理", sp: ["8.1.1","8.2.1","8.3.1"] }
-        ]
+      // 数学课程数据
+      math: {
+        "1": {
+          title: "一年级数学 (Matematik Tahun 1)",
+          units: [
+            { id: "1.0", name: "1.0 100以内的整数", sp: ["1.1.1","1.2.1","1.2.2","1.3.1","1.4.1","1.5.1","1.5.2","1.6.1","1.7.1","1.8.1","1.9.1","1.9.2","1.10.1"] },
+            { id: "2.0", name: "2.0 基本运算", sp: ["2.1.1","2.1.2","2.1.3","2.2.1","2.2.2","2.3.1","2.3.2","2.4.1","2.4.2","2.5.1","2.6.1"] },
+            { id: "3.0", name: "3.0 分数", sp: ["3.1.1","3.2.1"] },
+            { id: "4.0", name: "4.0 钱币", sp: ["4.1.1","4.1.2","4.1.3","4.2.1","4.2.2","4.3.1"] },
+            { id: "5.0", name: "5.0 时间与时刻", sp: ["5.1.1","5.1.2","5.1.3","5.1.4","5.2.1","5.2.2","5.2.3","5.3.1"] },
+            { id: "6.0", name: "6.0 度量衡", sp: ["6.1.1","6.1.2","6.1.3","6.2.1"] },
+            { id: "7.0", name: "7.0 空间", sp: ["7.1.1","7.1.2","7.1.3","7.1.4","7.2.1","7.2.2","7.2.3","7.2.4","7.3.1"] },
+            { id: "8.0", name: "8.0 数据处理", sp: ["8.1.1","8.2.1","8.3.1"] }
+          ]
+        },
+        "2": {
+          title: "二年级数学 (Matematik Tahun 2)",
+          units: [
+            { id: "1.0", name: "1.0 1000以内的整数", sp: ["1.1.1","1.1.2","1.2.1","1.3.1","1.3.2","1.4.1","1.4.2","1.5.1","1.6.1","1.7.1","1.7.2","1.8.1"] },
+            { id: "2.0", name: "2.0 基本运算", sp: ["2.1.1","2.1.2","2.2.1","2.2.2","2.3.1","2.3.2","2.4.1","2.4.2","2.5.1","2.5.2"] },
+            { id: "3.0", name: "3.0 分数与小数", sp: ["3.1.1","3.1.2","3.1.3","3.1.4","3.1.5","3.2.1","3.2.2","3.2.3","3.2.4","3.2.5","3.2.6","3.3.1","3.4.1"] },
+            { id: "4.0", name: "4.0 钱币", sp: ["4.1.1","4.1.2","4.2.1","4.2.2","4.3.1","4.3.2","4.4.1","4.5.1","4.6.1","4.7.1"] },
+            { id: "5.0", name: "5.0 时间与时刻", sp: ["5.1.1","5.1.2","5.1.3","5.1.4","5.2.1","5.3.1"] },
+            { id: "6.0", name: "6.0 度量衡", sp: ["6.1.1","6.1.2","6.1.3","6.2.1","6.2.2","6.2.3","6.3.1","6.3.2","6.3.3","6.4.1"] },
+            { id: "7.0", name: "7.0 空间", sp: ["7.1.1","7.1.2","7.1.3","7.2.1","7.2.2","7.3.1"] },
+            { id: "8.0", name: "8.0 数据处理", sp: ["8.1.1","8.2.1","8.3.1"] }
+          ]
+        },
+        "3": {
+          title: "三年级数学 (Matematik Tahun 3)",
+          units: [
+            { id: "1.0", name: "1.0 10 000以内的整数", sp: ["1.1.1","1.1.2","1.2.1","1.3.1","1.3.2","1.4.1","1.4.2","1.5.1","1.6.1","1.7.1","1.7.2","1.8.1"] },
+            { id: "2.0", name: "2.0 基本运算", sp: ["2.1.1","2.1.2","2.2.1","2.2.2","2.3.1","2.4.1","2.5.1","2.6.1","2.6.2","2.7.1","2.7.2","2.7.3"] },
+            { id: "3.0", name: "3.0 分数、小数与百分比", sp: ["3.1.1","3.1.2","3.1.3","3.1.4","3.1.5","3.1.6","3.1.7","3.2.1","3.2.2","3.2.3","3.2.4","3.2.5","3.3.1","3.3.2","3.3.3","3.3.4","3.4.1","3.4.2","3.4.3","3.5.1","3.5.2"] },
+            { id: "4.0", name: "4.0 钱币", sp: ["4.1.1","4.1.2","4.2.1","4.2.2","4.3.1","4.4.1","4.5.1","4.6.1","4.6.2","4.7.1","4.7.2","4.8.1","4.8.2"] },
+            { id: "5.0", name: "5.0 时间与时刻", sp: ["5.1.1","5.1.2","5.2.1","5.2.2","5.3.1","5.4.1","5.5.1","5.6.1","5.7.1","5.8.1","5.9.1","5.9.2"] },
+            { id: "6.0", name: "6.0 度量衡", sp: ["6.1.1","6.1.2","6.1.3","6.1.4","6.1.5","6.2.1","6.2.2","6.2.3","6.2.4","6.2.5","6.3.1","6.3.2","6.3.3","6.3.4","6.3.5","6.4.1","6.4.2"] },
+            { id: "7.0", name: "7.0 空间", sp: ["7.1.1","7.1.2","7.2.1","7.3.1","7.3.2","7.4.1","7.5.1"] },
+            { id: "8.0", name: "8.0 坐标", sp: ["8.1.1","8.1.2","8.1.3","8.2.1"] },
+            { id: "9.0", name: "9.0 数据处理", sp: ["9.1.1","9.2.1","9.3.1","9.4.1"] }
+          ]
+        },
+        "4": {
+          title: "四年级数学 (Matematik Tahun 4)",
+          units: [
+            { id: "1.0", name: "1.0 整数与运算", sp: ["1.1.1","1.1.2","1.2.1","1.2.2","1.3.1","1.4.1","1.5.1","1.5.2","1.6.1","1.6.2","1.6.3","1.6.4","1.6.5","1.7.1","1.7.2","1.8.1","1.8.2","1.9.1","1.9.2"] },
+            { id: "2.0", name: "2.0 分数、小数与百分比", sp: ["2.1.1","2.1.2","2.1.3","2.1.4","2.1.5","2.2.1","2.2.2","2.2.3","2.2.4","2.3.1","2.3.2","2.4.1"] },
+            { id: "3.0", name: "3.0 钱币", sp: ["3.1.1","3.1.2","3.1.3","3.1.4","3.2.1","3.2.2","3.3.1","3.3.2","3.3.3","3.4.1","3.4.2","3.4.3","3.5.1","3.5.2","3.6.1","3.6.2","3.7.1"] },
+            { id: "4.0", name: "4.0 时间与时刻", sp: ["4.1.1","4.2.1","4.3.1","4.4.1","4.4.2","4.5.1","4.5.2","4.6.1"] },
+            { id: "5.0", name: "5.0 度量衡", sp: ["5.1.1","5.1.2","5.1.3","5.1.4","5.1.5","5.1.6","5.1.7","5.1.8","5.1.9","5.2.1","5.2.2","5.3.1","5.3.2","5.4.1"] },
+            { id: "6.0", name: "6.0 空间", sp: ["6.1.1","6.2.1","6.2.2","6.3.1","6.3.2","6.4.1","6.5.1"] },
+            { id: "7.0", name: "7.0 坐标和比与比例", sp: ["7.1.1","7.1.2","7.2.1","7.3.1","7.4.1"] },
+            { id: "8.0", name: "8.0 数据处理", sp: ["8.1.1","8.1.2","8.2.1"] }
+          ]
+        },
+        "5": {
+          title: "五年级数学 (Matematik Tahun 5)",
+          units: [
+            { id: "1.0", name: "1.0 整数与基本运算", sp: ["1.1","1.2","1.3","1.4","1.5","1.6","1.7","1.8","1.9"] },
+            { id: "2.0", name: "2.0 分数，小数与百分比", sp: ["2.1","2.2","2.3","2.4"] },
+            { id: "3.0", name: "3.0 钱币", sp: ["3.1","3.2","3.3","3.4","3.5"] },
+            { id: "4.0", name: "4.0 时间与时刻", sp: ["4.1","4.2","4.3","4.4"] },
+            { id: "5.0", name: "5.0 度量衡", sp: ["5.1","5.2","5.3","5.4"] },
+            { id: "6.0", name: "6.0 空间", sp: ["6.1","6.2","6.3","6.4","6.5"] },
+            { id: "7.0", name: "7.0 坐标，比与比例", sp: ["7.1","7.2","7.3","7.4"] },
+            { id: "8.0", name: "8.0 数据处理", sp: ["8.1","8.2","8.3"] }
+          ]
+        },
+        "6": {
+          title: "六年级数学 (Matematik Tahun 6)",
+          units: [
+            { id: "1.0", name: "1.0 整数与基本数目", sp: ["1.1.1","1.1.2","1.1.3","1.1.4","1.1.5","1.2.1","1.3.1","1.4.1"] },
+            { id: "2.0", name: "2.0 分数、小数与百分比", sp: ["2.1.1","2.2.1","2.2.2","2.3.1","2.3.2","2.3.3","2.4.1","2.5.1"] },
+            { id: "3.0", name: "3.0 钱币", sp: ["3.1.1","3.1.2","3.2.1","3.2.2","3.3.1"] },
+            { id: "4.0", name: "4.0 时间与时刻", sp: ["4.1.1","4.1.2","4.2.1"] },
+            { id: "5.0", name: "5.0 度量衡", sp: ["5.1.1"] },
+            { id: "6.0", name: "6.0 空间", sp: ["6.1.1","6.1.2","6.2.1","6.2.2","6.3.1"] },
+            { id: "7.0", name: "7.0 坐标和比与比例", sp: ["7.1.1","7.2.1","7.3.1","7.4.1"] },
+            { id: "8.0", name: "8.0 数据处理", sp: ["8.1.1","8.2.1","8.2.2","8.3.1"] }
+          ]
+        }
       },
-      "2": {
-        title: "二年级数学 (Matematik Tahun 2)",
-        units: [
-          { id: "1.0", name: "1.0 1000以内的整数", sp: ["1.1.1","1.1.2","1.2.1","1.3.1","1.3.2","1.4.1","1.4.2","1.5.1","1.6.1","1.7.1","1.7.2","1.8.1"] },
-          { id: "2.0", name: "2.0 基本运算", sp: ["2.1.1","2.1.2","2.2.1","2.2.2","2.3.1","2.3.2","2.4.1","2.4.2","2.5.1","2.5.2"] },
-          { id: "3.0", name: "3.0 分数与小数", sp: ["3.1.1","3.1.2","3.1.3","3.1.4","3.1.5","3.2.1","3.2.2","3.2.3","3.2.4","3.2.5","3.2.6","3.3.1","3.4.1"] },
-          { id: "4.0", name: "4.0 钱币", sp: ["4.1.1","4.1.2","4.2.1","4.2.2","4.3.1","4.3.2","4.4.1","4.5.1","4.6.1","4.7.1"] },
-          { id: "5.0", name: "5.0 时间与时刻", sp: ["5.1.1","5.1.2","5.1.3","5.1.4","5.2.1","5.3.1"] },
-          { id: "6.0", name: "6.0 度量衡", sp: ["6.1.1","6.1.2","6.1.3","6.2.1","6.2.2","6.2.3","6.3.1","6.3.2","6.3.3","6.4.1"] },
-          { id: "7.0", name: "7.0 空间", sp: ["7.1.1","7.1.2","7.1.3","7.2.1","7.2.2","7.3.1"] },
-          { id: "8.0", name: "8.0 数据处理", sp: ["8.1.1","8.2.1","8.3.1"] }
-        ]
-      },
-      "3": {
-        title: "三年级数学 (Matematik Tahun 3)",
-        units: [
-          { id: "1.0", name: "1.0 10 000以内的整数", sp: ["1.1.1","1.1.2","1.2.1","1.3.1","1.3.2","1.4.1","1.4.2","1.5.1","1.6.1","1.7.1","1.7.2","1.8.1"] },
-          { id: "2.0", name: "2.0 基本运算", sp: ["2.1.1","2.1.2","2.2.1","2.2.2","2.3.1","2.4.1","2.5.1","2.6.1","2.6.2","2.7.1","2.7.2","2.7.3"] },
-          { id: "3.0", name: "3.0 分数、小数与百分比", sp: ["3.1.1","3.1.2","3.1.3","3.1.4","3.1.5","3.1.6","3.1.7","3.2.1","3.2.2","3.2.3","3.2.4","3.2.5","3.3.1","3.3.2","3.3.3","3.3.4","3.4.1","3.4.2","3.4.3","3.5.1","3.5.2"] },
-          { id: "4.0", name: "4.0 钱币", sp: ["4.1.1","4.1.2","4.2.1","4.2.2","4.3.1","4.4.1","4.5.1","4.6.1","4.6.2","4.7.1","4.7.2","4.8.1","4.8.2"] },
-          { id: "5.0", name: "5.0 时间与时刻", sp: ["5.1.1","5.1.2","5.2.1","5.2.2","5.3.1","5.4.1","5.5.1","5.6.1","5.7.1","5.8.1","5.9.1","5.9.2"] },
-          { id: "6.0", name: "6.0 度量衡", sp: ["6.1.1","6.1.2","6.1.3","6.1.4","6.1.5","6.2.1","6.2.2","6.2.3","6.2.4","6.2.5","6.3.1","6.3.2","6.3.3","6.3.4","6.3.5","6.4.1","6.4.2"] },
-          { id: "7.0", name: "7.0 空间", sp: ["7.1.1","7.1.2","7.2.1","7.3.1","7.3.2","7.4.1","7.5.1"] },
-          { id: "8.0", name: "8.0 坐标", sp: ["8.1.1","8.1.2","8.1.3","8.2.1"] },
-          { id: "9.0", name: "9.0 数据处理", sp: ["9.1.1","9.2.1","9.3.1","9.4.1"] }
-        ]
-      },
-      "4": {
-        title: "四年级数学 (Matematik Tahun 4)",
-        units: [
-          { id: "1.0", name: "1.0 整数与运算", sp: ["1.1.1","1.1.2","1.2.1","1.2.2","1.3.1","1.4.1","1.5.1","1.5.2","1.6.1","1.6.2","1.6.3","1.6.4","1.6.5","1.7.1","1.7.2","1.8.1","1.8.2","1.9.1","1.9.2"] },
-          { id: "2.0", name: "2.0 分数、小数与百分比", sp: ["2.1.1","2.1.2","2.1.3","2.1.4","2.1.5","2.2.1","2.2.2","2.2.3","2.2.4","2.3.1","2.3.2","2.4.1"] },
-          { id: "3.0", name: "3.0 钱币", sp: ["3.1.1","3.1.2","3.1.3","3.1.4","3.2.1","3.2.2","3.3.1","3.3.2","3.3.3","3.4.1","3.4.2","3.4.3","3.5.1","3.5.2","3.6.1","3.6.2","3.7.1"] },
-          { id: "4.0", name: "4.0 时间与时刻", sp: ["4.1.1","4.2.1","4.3.1","4.4.1","4.4.2","4.5.1","4.5.2","4.6.1"] },
-          { id: "5.0", name: "5.0 度量衡", sp: ["5.1.1","5.1.2","5.1.3","5.1.4","5.1.5","5.1.6","5.1.7","5.1.8","5.1.9","5.2.1","5.2.2","5.3.1","5.3.2","5.4.1"] },
-          { id: "6.0", name: "6.0 空间", sp: ["6.1.1","6.2.1","6.2.2","6.3.1","6.3.2","6.4.1","6.5.1"] },
-          { id: "7.0", name: "7.0 坐标和比与比例", sp: ["7.1.1","7.1.2","7.2.1","7.3.1","7.4.1"] },
-          { id: "8.0", name: "8.0 数据处理", sp: ["8.1.1","8.1.2","8.2.1"] }
-        ]
-      },
-      "5": {
-        title: "五年级数学 (Matematik Tahun 5)",
-        units: [
-          { id: "1.0", name: "1.0 整数与基本运算", sp: ["1.1","1.2","1.3","1.4","1.5","1.6","1.7","1.8","1.9"] },
-          { id: "2.0", name: "2.0 分数，小数与百分比", sp: ["2.1","2.2","2.3","2.4"] },
-          { id: "3.0", name: "3.0 钱币", sp: ["3.1","3.2","3.3","3.4","3.5"] },
-          { id: "4.0", name: "4.0 时间与时刻", sp: ["4.1","4.2","4.3","4.4"] },
-          { id: "5.0", name: "5.0 度量衡", sp: ["5.1","5.2","5.3","5.4"] },
-          { id: "6.0", name: "6.0 空间", sp: ["6.1","6.2","6.3","6.4","6.5"] },
-          { id: "7.0", name: "7.0 坐标，比与比例", sp: ["7.1","7.2","7.3","7.4"] },
-          { id: "8.0", name: "8.0 数据处理", sp: ["8.1","8.2","8.3"] }
-        ]
-      },
-      "6": {
-        title: "六年级数学 (Matematik Tahun 6)",
-        units: [
-          { id: "1.0", name: "1.0 整数与基本数目", sp: ["1.1.1","1.1.2","1.1.3","1.1.4","1.1.5","1.2.1","1.3.1","1.4.1"] },
-          { id: "2.0", name: "2.0 分数、小数与百分比", sp: ["2.1.1","2.2.1","2.2.2","2.3.1","2.3.2","2.3.3","2.4.1","2.5.1"] },
-          { id: "3.0", name: "3.0 钱币", sp: ["3.1.1","3.1.2","3.2.1","3.2.2","3.3.1"] },
-          { id: "4.0", name: "4.0 时间与时刻", sp: ["4.1.1","4.1.2","4.2.1"] },
-          { id: "5.0", name: "5.0 度量衡", sp: ["5.1.1"] },
-          { id: "6.0", name: "6.0 空间", sp: ["6.1.1","6.1.2","6.2.1","6.2.2","6.3.1"] },
-          { id: "7.0", name: "7.0 坐标和比与比例", sp: ["7.1.1","7.2.1","7.3.1","7.4.1"] },
-          { id: "8.0", name: "8.0 数据处理", sp: ["8.1.1","8.2.1","8.2.2","8.3.1"] }
-        ]
+
+      // 科学课程数据
+      science: {
+        "1": {
+          title: "一年级科学 (Sains Tahun 1)",
+          units: [
+            { id: "1.0", name: "1.0 科学技能", sp: ["1.1.1","1.1.2","1.2.1","1.2.2","1.2.3","1.2.4","1.2.5"] },
+            { id: "2.0", name: "2.0 科学室规则", sp: ["2.1.1"] },
+            { id: "3.0", name: "3.0 生物与非生物", sp: ["3.1.1","3.1.2","3.2.1","3.2.2","3.2.3","3.2.4","3.2.5"] },
+            { id: "4.0", name: "4.0 人类", sp: ["4.1.1","4.1.2","4.1.3","4.1.4","4.1.5"] },
+            { id: "5.0", name: "5.0 动物", sp: ["5.1.1","5.1.2","5.1.3","5.1.4","5.1.5"] },
+            { id: "6.0", name: "6.0 植物", sp: ["6.1.1","6.1.2","6.1.3","6.1.4"] },
+            { id: "7.0", name: "7.0 磁铁", sp: ["7.1.1","7.1.2","7.1.3","7.1.4","7.1.5","7.1.6"] },
+            { id: "8.0", name: "8.0 吸水性", sp: ["8.1.1","8.1.2","8.1.3","8.1.4","8.1.5","8.1.6"] },
+            { id: "9.0", name: "9.0 地球", sp: ["9.1.1","9.2.1","9.2.2","9.2.3"] },
+            { id: "10.0", name: "10.0 工艺", sp: ["10.1.1","10.1.2","10.1.3","10.1.4","10.1.5"] }
+          ]
+        },
+        "2": {
+          title: "二年级科学 (Sains Tahun 2)",
+          units: [
+            { id: "1.0", name: "1.0 科学技能", sp: ["1.1.1","1.1.2","1.1.3","1.1.4","1.2.1","1.2.2","1.2.3","1.2.4","1.2.5"] },
+            { id: "2.0", name: "2.0 科学室规则", sp: ["2.1.1"] },
+            { id: "3.0", name: "3.0 人类", sp: ["3.1.1","3.1.2","3.1.3","3.1.4","3.1.5","3.1.6"] },
+            { id: "4.0", name: "4.0 动物", sp: ["4.1.1","4.1.2","4.1.3","4.1.4","4.1.5","4.1.6","4.1.7"] },
+            { id: "5.0", name: "5.0 植物", sp: ["5.1.1","5.1.2","5.1.3","5.1.4","5.1.5","5.1.6"] },
+            { id: "6.0", name: "6.0 光和暗", sp: ["6.1.1","6.1.2","6.1.3","6.1.4","6.1.5","6.1.6"] },
+            { id: "7.0", name: "7.0 电路", sp: ["7.1.1","7.1.2","7.1.3","7.1.4","7.1.5","7.1.6","7.1.7"] },
+            { id: "8.0", name: "8.0 混合物", sp: ["8.1.1","8.1.2","8.1.3","8.1.4","8.1.5"] },
+            { id: "9.0", name: "9.0 地球", sp: ["9.1.1","9.1.2","9.1.3","9.1.4","9.1.5","9.2.1","9.2.2","9.2.3","9.2.4","9.2.5","9.2.6"] },
+            { id: "10.0", name: "10.0 工艺", sp: ["10.1.1","10.1.2","10.1.3","10.1.4","10.1.5","10.1.6"] }
+          ]
+        },
+        "3": {
+          title: "三年级科学 (Sains Tahun 3)",
+          units: [
+            { id: "1.0", name: "1.0 科学技能", sp: ["1.1.1","1.1.2","1.1.3","1.1.4","1.1.5","1.1.6","1.2.1","1.2.2","1.2.3","1.2.4","1.2.5"] },
+            { id: "2.0", name: "2.0 科学室规则", sp: ["2.1.1"] },
+            { id: "3.0", name: "3.0 人类", sp: ["3.1.1","3.1.2","3.1.3","3.1.4","3.1.5","3.2.1","3.2.2","3.2.3","3.2.4","3.2.5","3.3.1","3.3.2","3.3.3","3.3.4"] },
+            { id: "4.0", name: "4.0 动物", sp: ["4.1.1","4.1.2","4.1.3","4.1.4","4.1.5"] },
+            { id: "5.0", name: "5.0 植物", sp: ["5.1.1","5.1.2","5.1.3","5.1.4"] },
+            { id: "6.0", name: "6.0 测量", sp: ["6.1.1","6.1.2","6.1.3","6.1.4","6.1.5","6.1.6","6.1.7"] },
+            { id: "7.0", name: "7.0 密度", sp: ["7.1.1","7.1.2","7.1.3","7.1.4"] },
+            { id: "8.0", name: "8.0 酸与碱", sp: ["8.1.1","8.1.2","8.1.3","8.1.4"] },
+            { id: "9.0", name: "9.0 太阳系", sp: ["9.1.1","9.1.2","9.1.3","9.1.4","9.1.5"] },
+            { id: "10.0", name: "10.0 机械", sp: ["10.1.1","10.1.2","10.1.3","10.1.4","10.1.5"] }
+          ]
+        },
+        "4": {
+          title: "四年级科学 (Sains Tahun 4)",
+          units: [
+            { id: "1.0", name: "1.0 科学技能", sp: ["1.1.1","1.1.2","1.1.3","1.1.4","1.1.5","1.1.6","1.1.7","1.1.8","1.1.9","1.1.10","1.1.11","1.1.12"] },
+            { id: "2.0", name: "2.0 人类", sp: ["2.1.1","2.1.2","2.1.3","2.1.4","2.1.5","2.1.6","2.2.1","2.2.2","2.2.3","2.2.4","2.3.1","2.3.2","2.3.3","2.3.4","2.3.5"] },
+            { id: "3.0", name: "3.0 动物", sp: ["3.1.1","3.1.2","3.1.3","3.1.4","3.2.1","3.2.2","3.2.3","3.2.4"] },
+            { id: "4.0", name: "4.0 植物", sp: ["4.1.1","4.1.2","4.1.3","4.1.4","4.2.1","4.2.2","4.2.3","4.2.4","4.2.5"] },
+            { id: "5.0", name: "5.0 光的特性", sp: ["5.1.1","5.1.2","5.1.3","5.1.4","5.2.1","5.2.2","5.2.3","5.2.4","5.3.1","5.3.2","5.3.3","5.3.4"] },
+            { id: "6.0", name: "6.0 声音", sp: ["6.1.1","6.1.2","6.1.3","6.1.4","6.1.5"] },
+            { id: "7.0", name: "7.0 能", sp: ["7.1.1","7.1.2","7.1.3","7.1.4","7.1.5","7.1.6","7.2.1","7.2.2","7.2.3"] },
+            { id: "8.0", name: "8.0 材料", sp: ["8.1.1","8.1.2","8.1.3","8.2.1","8.2.2","8.2.3","8.2.4"] },
+            { id: "9.0", name: "9.0 地球", sp: ["9.1.1","9.1.2","9.1.3","9.2.1","9.2.2","9.2.3","9.2.4"] },
+            { id: "10.0", name: "10.0 机械", sp: ["10.1.1","10.1.2","10.1.3","10.2.1","10.2.2","10.2.3","10.2.4"] }
+          ]
+        },
+        "5": {
+          title: "五年级科学 (Sains Tahun 5)",
+          units: [
+            { id: "1.0", name: "1.0 科学探究", sp: ["1.1.1","1.1.2","1.1.3","1.1.4","1.1.5","1.1.6","1.1.7","1.1.8","1.1.9","1.1.10","1.1.11","1.1.12"] },
+            { id: "2.0", name: "2.0 人类", sp: ["2.1.1","2.1.2","2.1.3","2.1.4","2.1.5","2.2.1","2.2.2","2.2.3","2.2.4","2.3.1","2.3.2","2.3.3","2.3.4"] },
+            { id: "3.0", name: "3.0 动物", sp: ["3.1.1","3.1.2","3.1.3","3.1.4","3.1.5","3.1.6","3.2.1","3.2.2","3.2.3","3.2.4","3.3.1","3.3.2","3.3.3","3.3.4","3.3.5","3.3.6","3.3.7"] },
+            { id: "4.0", name: "4.0 植物", sp: ["4.1.1","4.1.2","4.1.3","4.2.1","4.2.2","4.2.3","4.2.4"] },
+            { id: "5.0", name: "5.0 电", sp: ["5.1.1","5.2.1","5.2.2","5.2.3","5.2.4","5.2.5","5.2.6","5.2.7","5.3.1","5.3.2","5.3.3","5.3.4"] },
+            { id: "6.0", name: "6.0 热", sp: ["6.1.1","6.1.2","6.1.3","6.1.4","6.1.5","6.1.6","6.1.7"] },
+            { id: "7.0", name: "7.0 生锈", sp: ["7.1.1","7.1.2","7.1.3","7.1.4","7.1.5","7.1.6"] },
+            { id: "8.0", name: "8.0 物质", sp: ["8.1.1","8.1.2","8.1.3","8.1.4","8.1.5","8.2.1","8.2.2","8.2.3","8.2.4"] },
+            { id: "9.0", name: "9.0 月相与星座", sp: ["9.1.1","9.1.2","9.1.3","9.1.4","9.2.1","9.2.2","9.2.3"] },
+            { id: "10.0", name: "10.0 机械", sp: ["10.1.1","10.1.2","10.1.3","10.1.4","10.1.5"] }
+          ]
+        },
+        "6": {
+          title: "六年级科学 (Sains Tahun 6)",
+          units: [
+            { id: "1.0", name: "1.0 科学技能", sp: ["1.1.1","1.1.2","1.1.3","1.1.4","1.1.5","1.1.6","1.1.7","1.1.8","1.1.9","1.1.10","1.1.11","1.1.12"] },
+            { id: "2.0", name: "2.0 人类", sp: ["2.1.1","2.1.2","2.1.3","2.1.4","2.2.1","2.2.2","2.2.3","2.2.4","2.2.5","2.2.6"] },
+            { id: "3.0", name: "3.0 微生物", sp: ["3.1.1","3.1.2","3.1.3","3.1.4","3.1.5","3.1.6"] },
+            { id: "4.0", name: "4.0 生物之间的相互关系", sp: ["4.1.1","4.1.2","4.1.3","4.1.4","4.2.1","4.2.2","4.2.3"] },
+            { id: "5.0", name: "5.0 保护与复原", sp: ["5.1.1","5.1.2","5.1.3","5.1.4","5.1.5","5.1.6","5.1.7"] },
+            { id: "6.0", name: "6.0 力", sp: ["6.1.1","6.1.2","6.1.3","6.2.1","6.2.2","6.2.3","6.2.4","6.2.5","6.3.1","6.3.2","6.3.3","6.3.4"] },
+            { id: "7.0", name: "7.0 速度", sp: ["7.1.1","7.1.2","7.1.3","7.1.4","7.1.5"] },
+            { id: "8.0", name: "8.0 食物保存科技", sp: ["8.1.1","8.1.2","8.1.3","8.2.1","8.2.2","8.2.3","8.2.4","8.2.5","8.2.6","8.2.7"] },
+            { id: "9.0", name: "9.0 废物", sp: ["9.1.1","9.1.2","9.1.3","9.1.4","9.1.5","9.1.6"] },
+            { id: "10.0", name: "10.0 月食和日食", sp: ["10.1.1","10.1.2","10.1.3","10.1.4","10.1.5"] },
+            { id: "11.0", name: "11.0 星系", sp: ["11.1.1","11.1.2","11.1.3","11.1.4","11.1.5"] },
+            { id: "12.0", name: "12.0 平稳性与坚固性", sp: ["12.1.1","12.1.2","12.1.3","12.1.4","12.1.5","12.1.6","12.1.7"] },
+            { id: "13.0", name: "13.0 工艺", sp: ["13.1.1","13.1.2","13.1.3","13.1.4"] }
+          ]
+        }
       }
     };
 
     const UNIT_INTERVENTION_TEMPLATES = {
+      // 数学干预建议模版
       "整数": [
         { title: "1. 数位与数值直观化 (Base-Ten Blocks)", icon: "fa-cubes", text: "使用十进位积木与数位表，引导 TP1-TP2 学生通过动手拼摆拆解千位、百位与十位的数值。" },
         { title: "2. 数轴跳跃计数法 (Number Line)", icon: "fa-timeline", text: "绘制可视化的数轴，指导学生通过跳跃计数 (Counting in jumps) 巩固顺序、倒序与数序规律。" },
@@ -542,35 +655,37 @@
       ],
       "运算": [
         { title: "1. 带网格竖式对齐练习 (Grid Alignment)", icon: "fa-table-cells", text: "提供带有数位网格的竖式卡片，纠正两步或多位数加减乘除时的进位与借位对齐错误。" },
-        { title: "2. 乘法口诀每日 5 分钟 (Flashcards)", icon: "fa-layer-group", text: "运用九宫格与乘法表闪卡，通过游戏化对战提升乘除法基本事实回忆速度。" },
-        { title: "3. Polya 解题模式图解 (Problem Solving)", icon: "fa-diagram-project", text: "拆解应用题：指导学生圈出关键词（如“共”、“剩余”、“倍”），画出模快图 (Block Model) 建构两步计算。" }
+        { title: "2. 乘法口诀每日 5 分钟 (Flashcards)", icon: "fa-layer-group", text: "运用九宫格与乘法表闪卡，通过游戏化对战提升乘除法基本事实回忆速度。" }
       ],
       "分数": [
         { title: "1. 折纸与图形分割 (Fraction Paper Folding)", icon: "fa-pie-chart", text: "通过长方形/圆形折纸和涂色活动，帮助学生建立“部分与整体”的分数直观概念。" },
-        { title: "2. 等值分数墙对比 (Fraction Wall)", icon: "fa-equals", text: "使用等值分数墙工具，直观对比 1/2, 2/4, 3/6 等量关系，辅助分数的约分与通分。" },
-        { title: "3. 假分数与带分数实物拼图", icon: "fa-shapes", text: "运用完整饼图加剩余碎片的图形拼接，帮助学生理解假分数转化为带分数的实际意义。" }
+        { title: "2. 等值分数墙对比 (Fraction Wall)", icon: "fa-equals", text: "使用等值分数墙工具，直观对比 1/2, 2/4, 3/6 等量关系，辅助分数的约分与通分。" }
       ],
-      "钱币": [
-        { title: "1. 模拟超市买卖 (Classroom Mini Mart)", icon: "fa-store", text: "准备道具纸币与硬币，开展找零与多物品组合结算的沉浸式实景交易体验。" },
-        { title: "2. 理财收支记账卡 (Budget Planner)", icon: "fa-wallet", text: "设计简易的“储蓄与支出”记录卡，训练学生理解储蓄、消费与预算的简单加减计算。" }
+      // 科学干预建议模版
+      "技能": [
+        { title: "1. 动手操作与观察记录 (Hands-on Observation)", icon: "fa-flask", text: "引导学生通过实际观察自然现象与实验步骤，使用记录表或图画呈现观察结果。" },
+        { title: "2. 变量分类与对比试验 (Variables & Control)", icon: "fa-sliders", text: "利用对比图卡协助学生区分操纵性变量、反应性变量与固定性变量。" }
       ],
-      "时间": [
-        { title: "1. 可转动时钟教具 (Interactive Clock)", icon: "fa-clock", text: "拨动模拟时钟的时针与分针，配合 12 小时制与 24 小时制对照盘强化读时能力。" },
-        { title: "2. 时间轴跨度计算 (Time Line)", icon: "fa-business-time", text: "绘制横向时间线，将“开始时间 + 经过时间 = 结束时间”的过程分段标出并逐段相加。" }
+      "人类": [
+        { title: "1. 人体结构与器官模型 (3D Human Body Model)", icon: "fa-child", text: "运用人体器官模型或交互式图示，帮助学生直观理解呼吸、消化、骨骼与血液循环系统。" },
+        { title: "2. 健康生活与系统保健 (Health Practice)", icon: "fa-heart-pulse", text: "通过情境卡片讨论伤害人体器官的行为，强化自我保健意识与良好生活习惯。" }
       ],
-      "度量衡": [
-        { title: "1. 实物测量与量感建立 (Hands-on Measuring)", icon: "fa-ruler-combined", text: "利用卷尺、天平与量杯在教室测量实物，建立厘米/米、克/公斤及毫升/升的真实量感。" },
-        { title: "2. 单位换算阶梯图 (Conversion Stairs)", icon: "fa-stairs", text: "设计带箭头乘除系数 (x10, x100, x1000) 的单位换算阶梯图，防止换算方向颠倒。" }
+      "动物": [
+        { title: "1. 动物特征与分类卡片 (Animal Classification)", icon: "fa-paw", text: "提供不同动物的外形特征、呼吸器官与食性卡片，引导学生进行图表分类。" },
+        { title: "2. 食物链与食物网建构 (Food Web Construction)", icon: "fa-diagram-project", text: "使用生产者与消费者拼卡，协助学生绘制正确的食物链与食物网关系。" }
       ],
-      "空间": [
-        { title: "1. 立体展开图拼装 (3D Net Assembly)", icon: "fa-cube", text: "动手折叠立体图形的展开图 (Nets)，直观观察长方体、正方体、棱锥体的面、边与顶点。" },
-        { title: "2. 方格纸数周长与面积 (Grid Paper Area)", icon: "fa-border-all", text: "在方格纸上数格计算平面图形的周长与面积，避免直接死记硬背公式。" }
+      "植物": [
+        { title: "1. 植物器官与成长过程 (Plant Life Cycle)", icon: "fa-seedling", text: "种植豆类实物，观察并记录种子萌发、茎叶生长及开花结果的完整过程。" },
+        { title: "2. 光合作用与传播方式 (Photosynthesis & Seed Dispersal)", icon: "fa-sun", text: "通过动画与实物模型，展示植物通过水、风、动物及自动爆裂传播种子的机制。" }
       ],
-      "坐标": [
-        { title: "1. 先横后竖网格寻宝 (Coordinates Grid)", icon: "fa-map-location-dot", text: "利用“先横(X轴)后竖(Y轴)”口诀，在坐标棋盘上进行位置定位寻宝互动。" }
+      "光": [
+        { title: "1. 光线传播与影子实验 (Light & Shadow Experiment)", icon: "fa-lightbulb", text: "利用手电筒与不同透光度的遮挡物，亲身体验光沿着直线传播与影子的形成过程。" }
       ],
-      "数据": [
-        { title: "1. 实物象形图与条形图绘制", icon: "fa-chart-column", text: "收集全班实际数据，引导学生使用图标或积木堆叠动手绘制条形统计图。" }
+      "电": [
+        { title: "1. 动手组装简单电路 (Circuit Assembly)", icon: "fa-bolt", text: "提供电池、导线、开关和小灯泡，指导学生组装并对比串联与并联电路的亮度差异。" }
+      ],
+      "地球": [
+        { title: "1. 太阳系与天体运转模型 (Solar System Model)", icon: "fa-earth-asia", text: "利用球体模型演示地球自转与公转、昼夜交替及月相变化的形成原理。" }
       ]
     };
 
@@ -584,6 +699,7 @@
     /****************************************************************
      * 2. STATE MANAGEMENT & LOCAL STORAGE
      ****************************************************************/
+    let currentSubject = "science"; // Default: science
     let currentGrade = "3";
     let selectedStudentIds = new Set();
     let tpChartInstance = null;
@@ -594,7 +710,7 @@
       schoolNameMY: "SJK(C) KANG YAO",
       logoBase64: "",
       gradeInfo: {
-        "1": { teacherName: "王老师", className: "1M" },
+        "1": { teacherName: "黄秋慧", className: "1M" },
         "2": { teacherName: "陈老师", className: "2M" },
         "3": { teacherName: "LEE KIAT CHEW", className: "3M" },
         "4": { teacherName: "张老师", className: "4M" },
@@ -607,7 +723,7 @@
 
     function initApp() {
       loadSettings();
-      loadGradeData(currentGrade);
+      loadGradeData(currentSubject, currentGrade);
       setupUnitDropdown();
       renderTransitTable();
       renderSettingStudentList();
@@ -677,9 +793,10 @@
     function updateHeaderAndLogoUI() {
       const currentTeacher = getTeacherName(currentGrade);
       const currentClass = getClassName(currentGrade);
+      const subLabel = currentSubject === "math" ? "数学" : "科学";
 
-      document.getElementById("nav-school-name").innerText = `${appSettings.schoolNameMY} 数学 PBD 评估系统`;
-      document.getElementById("nav-sub-info").innerText = `当前年级: ${currentGrade}年级 | 任课教师: ${currentTeacher} | 班级: ${currentClass}`;
+      document.getElementById("nav-school-name").innerText = `${appSettings.schoolNameMY} ${subLabel} PBD 评估系统`;
+      document.getElementById("nav-sub-info").innerText = `科目: ${subLabel} | 当前年级: ${currentGrade}年级 | 任课教师: ${currentTeacher} | 班级: ${currentClass}`;
       
       const fallback = document.getElementById("nav-logo-fallback");
       const img = document.getElementById("nav-logo-img");
@@ -711,9 +828,15 @@
       document.getElementById("logo-file-input").value = "";
     }
 
-    function loadGradeData(grade) {
-      const key = `pbd_data_grade_${grade}`;
-      const saved = localStorage.getItem(key);
+    function loadGradeData(subject, grade) {
+      const key = `pbd_data_${subject}_grade_${grade}`;
+      const fallbackKey = `pbd_data_grade_${grade}`;
+      
+      let saved = localStorage.getItem(key);
+      if (!saved && subject === "math") {
+        saved = localStorage.getItem(fallbackKey);
+      }
+
       if (saved) {
         try {
           gradeDataStore[grade] = JSON.parse(saved);
@@ -726,7 +849,7 @@
     }
 
     function saveCurrentGradeData() {
-      const key = `pbd_data_grade_${currentGrade}`;
+      const key = `pbd_data_${currentSubject}_grade_${currentGrade}`;
       localStorage.setItem(key, JSON.stringify(gradeDataStore[currentGrade]));
     }
 
@@ -738,10 +861,24 @@
       }));
     }
 
+    function changeSubject(newSubject) {
+      currentSubject = newSubject;
+      selectedStudentIds.clear();
+      loadGradeData(currentSubject, currentGrade);
+      updateHeaderAndLogoUI();
+      setupUnitDropdown();
+      renderTransitTable();
+      renderSettingStudentList();
+      if (!document.getElementById("tab-content-analytics").classList.contains("hidden")) {
+        renderAnalyticsPage();
+      }
+      showToast(`已切换至 ${newSubject === 'math' ? '数学' : '科学'} 科目`);
+    }
+
     function changeGrade(newGrade) {
       currentGrade = newGrade;
       selectedStudentIds.clear();
-      loadGradeData(currentGrade);
+      loadGradeData(currentSubject, currentGrade);
       refreshGradeSettingInputs();
       updateHeaderAndLogoUI();
       setupUnitDropdown();
@@ -760,7 +897,7 @@
       unitSelect.innerHTML = "";
       analyticsUnitSelect.innerHTML = `<option value="ALL">显示：全学期所有单元综合分析</option>`;
 
-      const units = CURRICULUM_DATA[currentGrade].units;
+      const units = CURRICULUM_DATA[currentSubject][currentGrade].units;
       units.forEach(u => {
         const opt = document.createElement("option");
         opt.value = u.id;
@@ -783,7 +920,7 @@
      ****************************************************************/
     function renderTransitTable() {
       const unitId = document.getElementById("unit-select").value;
-      const unitObj = CURRICULUM_DATA[currentGrade].units.find(u => u.id === unitId);
+      const unitObj = CURRICULUM_DATA[currentSubject][currentGrade].units.find(u => u.id === unitId);
       if (!unitObj) return;
 
       document.getElementById("current-unit-title").innerText = unitObj.name;
@@ -909,7 +1046,7 @@
 
     function batchToggleAllSP(isChecked) {
       const unitId = document.getElementById("unit-select").value;
-      const unitObj = CURRICULUM_DATA[currentGrade].units.find(u => u.id === unitId);
+      const unitObj = CURRICULUM_DATA[currentSubject][currentGrade].units.find(u => u.id === unitId);
       if (!unitObj) return;
 
       const students = gradeDataStore[currentGrade] || [];
@@ -938,7 +1075,7 @@
     }
 
     function autoSuggestTP(student, unitId) {
-      const unitObj = CURRICULUM_DATA[currentGrade].units.find(u => u.id === unitId);
+      const unitObj = CURRICULUM_DATA[currentSubject][currentGrade].units.find(u => u.id === unitId);
       if (!unitObj) return;
       const checkedCount = unitObj.sp.filter(sp => student.evaluations[unitId].sp[sp]).length;
       const total = unitObj.sp.length;
@@ -1114,12 +1251,12 @@
     function renderAnalyticsPage() {
       const selectedScope = document.getElementById("analytics-unit-select").value;
       const students = gradeDataStore[currentGrade] || [];
-      const units = CURRICULUM_DATA[currentGrade].units;
+      const units = CURRICULUM_DATA[currentSubject][currentGrade].units;
 
       const badge = document.getElementById("analytics-scope-badge");
 
       if (selectedScope === "ALL") {
-        badge.innerText = "当前视图：全学期综合汇总数据";
+        badge.innerText = "当前视图：全学期所有单元综合汇总数据";
         renderOverallAnalytics(students, units);
       } else {
         const unitObj = units.find(u => u.id === selectedScope);
@@ -1308,17 +1445,18 @@
       const container = document.getElementById("intervention-advice-box");
       container.innerHTML = "";
 
-      let matchedKey = "整数";
-      if (unitTitle.includes("运算")) matchedKey = "运算";
-      else if (unitTitle.includes("分数") || unitTitle.includes("小数") || unitTitle.includes("百分比")) matchedKey = "分数";
-      else if (unitTitle.includes("钱币")) matchedKey = "钱币";
-      else if (unitTitle.includes("时间")) matchedKey = "时间";
-      else if (unitTitle.includes("度量衡") || unitTitle.includes("长度") || unitTitle.includes("质量") || unitTitle.includes("液体")) matchedKey = "度量衡";
-      else if (unitTitle.includes("空间")) matchedKey = "空间";
-      else if (unitTitle.includes("坐标")) matchedKey = "坐标";
-      else if (unitTitle.includes("数据")) matchedKey = "数据";
+      let matchedKey = "技能";
+      if (unitTitle.includes("整数")) matchedKey = "整数";
+      else if (unitTitle.includes("运算")) matchedKey = "运算";
+      else if (unitTitle.includes("分数")) matchedKey = "分数";
+      else if (unitTitle.includes("人类")) matchedKey = "人类";
+      else if (unitTitle.includes("动物") || unitTitle.includes("微生物")) matchedKey = "动物";
+      else if (unitTitle.includes("植物")) matchedKey = "植物";
+      else if (unitTitle.includes("光")) matchedKey = "光";
+      else if (unitTitle.includes("电")) matchedKey = "电";
+      else if (unitTitle.includes("地球") || unitTitle.includes("太阳") || unitTitle.includes("月")) matchedKey = "地球";
 
-      const templates = UNIT_INTERVENTION_TEMPLATES[matchedKey] || UNIT_INTERVENTION_TEMPLATES["整数"];
+      const templates = UNIT_INTERVENTION_TEMPLATES[matchedKey] || UNIT_INTERVENTION_TEMPLATES["技能"];
 
       templates.forEach(tpl => {
         const div = document.createElement("div");
@@ -1350,7 +1488,7 @@
               <td class="p-2.5 font-semibold text-slate-800">${s.name}</td>
               <td class="p-2.5 text-slate-600">${u.name}</td>
               <td class="p-2.5"><span class="px-2 py-0.5 text-xs font-bold rounded ${getTPClass(tp)}">${tp}</span></td>
-              <td class="p-2.5 text-slate-600">根据上方单元模版采取直观教具辅导与伴学结对</td>
+              <td class="p-2.5 text-slate-600">根据上方模块采取具象教具、针对性练习或伴学结对策略</td>
               <td class="p-2.5"><span class="text-amber-600 font-medium"><i class="fa-solid fa-clock-rotate-left"></i> 追踪中</span></td>
             `;
             tbody.appendChild(tr);
@@ -1368,11 +1506,12 @@
      ****************************************************************/
     function openPopupPrintTransit() {
       const unitId = document.getElementById("unit-select").value;
-      const unitObj = CURRICULUM_DATA[currentGrade].units.find(u => u.id === unitId);
+      const unitObj = CURRICULUM_DATA[currentSubject][currentGrade].units.find(u => u.id === unitId);
       const students = gradeDataStore[currentGrade] || [];
 
       const currentTeacher = getTeacherName(currentGrade);
       const currentClass = getClassName(currentGrade);
+      const subLabel = currentSubject === "math" ? "数学 (MATEMATIK)" : "科学 (SAINS)";
 
       const popup = window.open('', '_blank', 'width=1100,height=800');
       if (!popup) { alert("打印弹窗被浏览器拦截，请允许弹出窗口许可！"); return; }
@@ -1404,7 +1543,7 @@
             ${logoHtml}
             <div style="display:inline-block; vertical-align:middle;">
               <h1>${appSettings.schoolNameCN} (${appSettings.schoolNameMY})</h1>
-              <h2>BORANG TRANSIT PBD ${CURRICULUM_DATA[currentGrade].title}</h2>
+              <h2>BORANG TRANSIT PBD ${subLabel} ${CURRICULUM_DATA[currentSubject][currentGrade].title}</h2>
             </div>
           </div>
 
@@ -1453,7 +1592,7 @@
 
     function openPopupPrintSlips() {
       const students = gradeDataStore[currentGrade] || [];
-      const units = CURRICULUM_DATA[currentGrade].units;
+      const units = CURRICULUM_DATA[currentSubject][currentGrade].units;
 
       const currentTeacher = getTeacherName(currentGrade);
       const currentClass = getClassName(currentGrade);
@@ -1497,7 +1636,7 @@
                 <tr>
                   <td>学生姓名: <b>${s.name}</b></td>
                   <td>班级: <b>${currentClass}</b></td>
-                  <td>科目: <b>${CURRICULUM_DATA[currentGrade].title}</b></td>
+                  <td>科目: <b>${CURRICULUM_DATA[currentSubject][currentGrade].title}</b></td>
                 </tr>
               </table>
 
@@ -1538,10 +1677,11 @@
 
     function openPopupPrintIntervention() {
       const students = gradeDataStore[currentGrade] || [];
-      const units = CURRICULUM_DATA[currentGrade].units;
+      const units = CURRICULUM_DATA[currentSubject][currentGrade].units;
 
       const currentTeacher = getTeacherName(currentGrade);
       const currentClass = getClassName(currentGrade);
+      const subLabel = currentSubject === "math" ? "数学" : "科学";
 
       const popup = window.open('', '_blank', 'width=900,height=800');
       if (!popup) return;
@@ -1560,7 +1700,7 @@
           </style>
         </head>
         <body>
-          <h1>${appSettings.schoolNameCN} - 数学干预辅导计划表 (${CURRICULUM_DATA[currentGrade].title})</h1>
+          <h1>${appSettings.schoolNameCN} - ${subLabel}干预辅导计划表 (${CURRICULUM_DATA[currentSubject][currentGrade].title})</h1>
           <p>班级: ${currentClass} | 教师: ${currentTeacher}</p>
           <table>
             <thead>
@@ -1594,7 +1734,7 @@
      ****************************************************************/
     function exportDataCSV() {
       const students = gradeDataStore[currentGrade] || [];
-      const units = CURRICULUM_DATA[currentGrade].units;
+      const units = CURRICULUM_DATA[currentSubject][currentGrade].units;
       const currentClass = getClassName(currentGrade);
 
       let csv = "\uFEFF序,学生姓名," + units.map(u => `"${u.name}"`).join(",") + "\n";
@@ -1611,23 +1751,24 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${currentClass}_PBD_Tahun_${currentGrade}_Assessment.csv`;
+      a.download = `${currentClass}_PBD_Tahun_${currentGrade}_${currentSubject}_Assessment.csv`;
       a.click();
     }
 
     // Export JSON Backup File
     function exportBackupJSON() {
       const backupObject = {
-        version: "2.0",
+        version: "3.0",
         exportDate: new Date().toISOString(),
         settings: appSettings,
-        gradeStore: gradeDataStore
+        gradeStore: gradeDataStore,
+        currentSubject: currentSubject
       };
 
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupObject, null, 2));
       const a = document.createElement("a");
       a.href = dataStr;
-      a.download = `PBD_Backup_Full_SchoolData_${Date.now()}.json`;
+      a.download = `PBD_Full_SchoolData_Backup_${Date.now()}.json`;
       a.click();
       showToast("备份文件已成功导出！");
     }
@@ -1656,13 +1797,13 @@
             if (importedData.gradeStore) {
               gradeDataStore = importedData.gradeStore;
               Object.keys(gradeDataStore).forEach(gradeKey => {
-                localStorage.setItem(`pbd_data_grade_${gradeKey}`, JSON.stringify(gradeDataStore[gradeKey]));
+                localStorage.setItem(`pbd_data_${currentSubject}_grade_${gradeKey}`, JSON.stringify(gradeDataStore[gradeKey]));
               });
             }
 
             // Reload UI Application State
             loadSettings();
-            loadGradeData(currentGrade);
+            loadGradeData(currentSubject, currentGrade);
             setupUnitDropdown();
             renderTransitTable();
             renderSettingStudentList();
