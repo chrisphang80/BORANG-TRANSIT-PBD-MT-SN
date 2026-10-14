@@ -19,10 +19,10 @@
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-    /* 粘性冻结列样式，彻底解决姓名挤压问题 */
+    /* 粘性冻结列样式 */
     .sticky-col-1 { position: sticky; left: 0px; z-index: 20; background-color: white; min-width: 40px; width: 40px; }
     .sticky-col-2 { position: sticky; left: 40px; z-index: 20; background-color: white; min-width: 48px; width: 48px; }
-    .sticky-col-3 { position: sticky; left: 88px; z-index: 20; background-color: white; min-width: 150px; width: 150px; white-space: nowrap; }
+    .sticky-col-3 { position: sticky; left: 88px; z-index: 20; background-color: white; min-width: 140px; width: 140px; white-space: nowrap; }
 
     .tp-badge-1 { background-color: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
     .tp-badge-2 { background-color: #fff7ed; color: #9a3412; border: 1px solid #fed7aa; }
@@ -66,7 +66,7 @@
   <!-- Main Content Area -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
-    <!-- Global Controls Toolbar (布局与宽度防挤压优化) -->
+    <!-- Global Controls Toolbar -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-6 flex flex-wrap items-center justify-between gap-3">
       
       <!-- Left Filters Group -->
@@ -94,7 +94,7 @@
           </select>
         </div>
 
-        <!-- Unit Selector (限制最大宽度并允许省略号，防止整行下掉) -->
+        <!-- Unit Selector -->
         <div id="unit-select-container" class="min-w-0">
           <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">评估单元 (UNIT)</label>
           <select id="unit-select" onchange="renderTransitTable()" class="bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-sm font-medium focus:ring-2 focus:ring-indigo-500 max-w-[210px] sm:max-w-[250px] truncate" title="点击选择单元">
@@ -103,7 +103,7 @@
         </div>
       </div>
 
-      <!-- Quick Action Buttons & Backup Controls (flex-shrink-0 确保不缩放挤压) -->
+      <!-- Quick Action Buttons & Backup Controls -->
       <div class="flex flex-wrap items-center gap-1.5 flex-shrink-0">
         <button onclick="openPopupPrintTransit()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs sm:text-sm font-medium shadow-sm transition flex items-center gap-1.5">
           <i class="fa-solid fa-print"></i> 打印 Borang Transit
@@ -140,8 +140,7 @@
         <div class="flex flex-wrap items-center gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
           <span class="text-xs font-semibold text-slate-500 pl-1"><i class="fa-solid fa-list-check"></i> 批量操作:</span>
           
-          <!-- Batch SP Check Buttons -->
-          <button onclick="batchToggleAllSP(true)" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs rounded-lg font-medium transition flex items-center gap-1" title="勾选当前选中学生（未选则对全班）的所有 SP">
+          <button onclick="batchToggleAllSP(true)" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs rounded-lg font-medium transition flex items-center gap-1">
             <i class="fa-solid fa-square-check text-indigo-600"></i> 一键全选 SP
           </button>
           <button onclick="batchToggleAllSP(false)" class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs rounded-lg font-medium transition flex items-center gap-1">
@@ -165,7 +164,7 @@
         </div>
       </div>
 
-      <!-- Main Assessment Data Table -->
+      <!-- Main Assessment Data Table (自适应屏幕 Fit) -->
       <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
         <div class="overflow-x-auto custom-scrollbar">
           <table class="w-full text-left border-collapse text-sm">
@@ -177,14 +176,14 @@
                 <th class="p-3 sticky-col-2 border-r border-slate-200 bg-slate-100 font-bold text-center">序</th>
                 <th class="p-3 sticky-col-3 border-r border-slate-200 bg-slate-100 font-bold whitespace-nowrap">学生姓名</th>
                 
-                <!-- Dynamic SP Headers with Per-Column Select All Checkbox -->
+                <!-- Dynamic SP Headers Container -->
                 <th id="sp-headers-container" class="p-0 border-r border-slate-200">
                   <!-- Generated via JS -->
                 </th>
 
-                <th class="p-3 w-28 min-w-[100px] text-center font-bold bg-indigo-50 text-indigo-900 border-r border-slate-200 whitespace-nowrap">SP 掌握度</th>
-                <th class="p-3 w-32 min-w-[110px] text-center font-bold bg-amber-50 text-amber-900 border-r border-slate-200 whitespace-nowrap">单元总 TP</th>
-                <th class="p-3 w-20 min-w-[70px] text-center font-bold whitespace-nowrap">操作</th>
+                <th class="p-2 w-24 min-w-[85px] text-center font-bold bg-indigo-50 text-indigo-900 border-r border-slate-200 whitespace-nowrap">SP 掌握度</th>
+                <th class="p-2 w-28 min-w-[95px] text-center font-bold bg-amber-50 text-amber-900 border-r border-slate-200 whitespace-nowrap">单元总 TP</th>
+                <th class="p-2 w-16 min-w-[60px] text-center font-bold whitespace-nowrap">操作</th>
               </tr>
             </thead>
             <tbody id="transit-table-body" class="divide-y divide-slate-200">
@@ -196,10 +195,8 @@
 
     </div>
 
-    <!-- TAB 2: DATA ANALYTICS & INTERVENTION PAGE -->
+    <!-- TAB 2: DATA ANALYTICS PAGE -->
     <div id="tab-content-analytics" class="space-y-6 hidden">
-      
-      <!-- Analytics Unit Scope Switcher -->
       <div class="bg-white rounded-2xl border border-indigo-100 p-4 shadow-sm flex flex-wrap items-center justify-between gap-4 bg-gradient-to-r from-indigo-50/50 to-white">
         <div class="flex items-center gap-3">
           <div class="w-9 h-9 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-lg">
@@ -209,7 +206,6 @@
             <label class="block text-xs font-bold uppercase tracking-wider text-indigo-900">分析数据范围选择 (Scope)</label>
             <select id="analytics-unit-select" onchange="renderAnalyticsPage()" class="mt-0.5 border border-indigo-200 rounded-lg px-3 py-1.5 text-sm font-bold text-slate-800 bg-white focus:ring-2 focus:ring-indigo-500">
               <option value="ALL">显示：全学期所有单元综合分析</option>
-              <!-- Populated dynamically per grade -->
             </select>
           </div>
         </div>
@@ -219,7 +215,7 @@
         </div>
       </div>
 
-      <!-- Analytics KPI Metric Cards -->
+      <!-- KPI Cards -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
           <div>
@@ -262,9 +258,8 @@
         </div>
       </div>
 
-      <!-- Visual Charts Grid -->
+      <!-- Visual Charts -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Chart 1: TP Grade Distribution -->
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
           <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2" id="chart-1-title">
             <i class="fa-solid fa-chart-column text-indigo-600"></i> TP 等级总体分布图
@@ -274,7 +269,6 @@
           </div>
         </div>
 
-        <!-- Chart 2: Dynamic (Unit Comparison OR SP Breakdown Chart) -->
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
           <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2" id="chart-2-title">
             <i class="fa-solid fa-chart-bar text-emerald-600"></i> 各单元平均 TP 掌握度对比
@@ -285,7 +279,7 @@
         </div>
       </div>
 
-      <!-- Intervention Activity Suggestions & Plan Section -->
+      <!-- Intervention Section -->
       <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
         <div class="flex flex-wrap items-center justify-between border-b border-slate-200 pb-4 gap-2">
           <div>
@@ -299,12 +293,8 @@
           </button>
         </div>
 
-        <!-- Recommended Activity Strategy List -->
-        <div id="intervention-advice-box" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <!-- Dynamically populated based on unit topic -->
-        </div>
+        <div id="intervention-advice-box" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
 
-        <!-- Students Needing Intervention Table -->
         <div>
           <h4 class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
             <i class="fa-solid fa-user-gear text-rose-500"></i> 需辅导/巩固学生追踪名单 (TP1 - TP3)
@@ -320,21 +310,15 @@
                   <th class="p-2.5 font-bold">状态</th>
                 </tr>
               </thead>
-              <tbody id="intervention-students-body" class="divide-y divide-slate-200 bg-white">
-                <!-- Dynamically populated -->
-              </tbody>
+              <tbody id="intervention-students-body" class="divide-y divide-slate-200 bg-white"></tbody>
             </table>
           </div>
         </div>
-
       </div>
-
     </div>
 
-    <!-- TAB 3: STUDENT & SCHOOL SETTINGS -->
+    <!-- TAB 3: SETTINGS -->
     <div id="tab-content-students" class="space-y-6 hidden">
-      
-      <!-- 1. Grade-Specific Teacher & Class Settings Box -->
       <div class="bg-white rounded-2xl border border-indigo-200 shadow-sm p-6 space-y-4 bg-indigo-50/20">
         <div class="flex items-center justify-between border-b border-indigo-100 pb-3">
           <h3 class="text-base font-bold text-indigo-900 flex items-center gap-2">
@@ -346,11 +330,11 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
           <div>
             <label class="block text-xs font-semibold text-slate-700 mb-1">任课教师姓名 (Nama Guru)</label>
-            <input type="text" id="setting-teacher-name" value="LEE KIAT CHEW" placeholder="例如: LEE KIAT CHEW" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 bg-white">
+            <input type="text" id="setting-teacher-name" value="LEE KIAT CHEW" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 bg-white">
           </div>
           <div>
             <label class="block text-xs font-semibold text-slate-700 mb-1">班级名称 (Kelas)</label>
-            <input type="text" id="setting-class-name" value="3M" placeholder="例如: 3M / 1 MERAH" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 bg-white">
+            <input type="text" id="setting-class-name" value="3M" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 bg-white">
           </div>
           <div>
             <button onclick="saveGradeClassSettings()" class="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-bold shadow-sm transition flex items-center justify-center gap-2">
@@ -360,7 +344,6 @@
         </div>
       </div>
 
-      <!-- 2. School Info & Logo Customization Box -->
       <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
         <h3 class="text-base font-bold text-slate-900 flex items-center gap-2 border-b border-slate-200 pb-3">
           <i class="fa-solid fa-school-flag text-indigo-600"></i> 全校通用设置 (Maklumat Sekolah)
@@ -381,7 +364,6 @@
             </button>
           </div>
 
-          <!-- Logo Upload Box -->
           <div class="md:col-span-3 border-t border-slate-100 pt-3 mt-1">
             <label class="block text-xs font-semibold text-slate-600 mb-1">上传校徽 (Upload Logo)</label>
             <div class="flex items-center gap-4">
@@ -392,28 +374,22 @@
         </div>
       </div>
 
-      <!-- Add & Batch Import Students Box -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Single Student Add -->
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
           <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
             <i class="fa-solid fa-user-plus text-indigo-600"></i> 单个添加学生
           </h3>
           <div class="flex gap-2">
-            <input type="text" id="single-student-name" placeholder="输入学生姓名 (如: 张小明)..." class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
+            <input type="text" id="single-student-name" placeholder="输入学生姓名..." class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
             <button onclick="addSingleStudent()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition">添加</button>
           </div>
         </div>
 
-        <!-- Batch Import Students -->
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
           <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
             <i class="fa-solid fa-users-line text-emerald-600"></i> 批量粘贴导入学生名单
           </h3>
-          <textarea id="batch-students-textarea" rows="3" placeholder="每行输入一位学生姓名，例如:
-陈大文
-李小丽
-张三" class="w-full border border-slate-300 rounded-lg p-3 text-xs focus:ring-2 focus:ring-indigo-500 custom-scrollbar"></textarea>
+          <textarea id="batch-students-textarea" rows="3" placeholder="每行一位学生姓名" class="w-full border border-slate-300 rounded-lg p-3 text-xs focus:ring-2 focus:ring-indigo-500 custom-scrollbar"></textarea>
           <div class="flex justify-end gap-2">
             <button onclick="importBatchStudents(false)" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-medium transition">+ 追加到现有名单</button>
             <button onclick="importBatchStudents(true)" class="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-medium transition">替换现有名单</button>
@@ -421,7 +397,6 @@
         </div>
       </div>
 
-      <!-- Full Student List & Management Table -->
       <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
           <h3 class="text-base font-bold text-slate-800">当前年级学生名单列表 (<span id="setting-student-count">28</span> 人)</h3>
@@ -433,39 +408,31 @@
           <table class="w-full text-left text-sm">
             <thead class="bg-slate-100 text-slate-600 text-xs uppercase border-b border-slate-200">
               <tr>
-                <th class="p-3 w-10 text-center">
-                  <input type="checkbox" onchange="toggleSelectAll(this.checked)" class="rounded text-indigo-600 h-4 w-4">
-                </th>
+                <th class="p-3 w-10 text-center"><input type="checkbox" onchange="toggleSelectAll(this.checked)" class="rounded text-indigo-600 h-4 w-4"></th>
                 <th class="p-3 w-12 text-center font-bold">学号</th>
                 <th class="p-3 font-bold">学生姓名</th>
                 <th class="p-3 w-32 text-center font-bold">已评估单元数</th>
                 <th class="p-3 w-32 text-center font-bold">操作</th>
               </tr>
             </thead>
-            <tbody id="setting-student-list-body" class="divide-y divide-slate-200">
-              <!-- Dynamically populated -->
-            </tbody>
+            <tbody id="setting-student-list-body" class="divide-y divide-slate-200"></tbody>
           </table>
         </div>
       </div>
-
     </div>
 
   </main>
 
-  <!-- Notification Toast -->
   <div id="toast-notification" class="fixed bottom-5 right-5 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl text-sm font-medium transition-all duration-300 transform translate-y-20 opacity-0 z-50 flex items-center gap-2">
     <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
     <span id="toast-message">操作已成功保存</span>
   </div>
 
-  <!-- JAVASCRIPT APPLICATION LOGIC -->
   <script>
     /****************************************************************
      * 1. CURRICULUM DATA DEFINITION (MATH & SCIENCE - YEARS 1 TO 6)
      ****************************************************************/
     const CURRICULUM_DATA = {
-      // 数学课程数据
       math: {
         "1": {
           title: "一年级数学 (Matematik Tahun 1)",
@@ -523,14 +490,14 @@
         "5": {
           title: "五年级数学 (Matematik Tahun 5)",
           units: [
-            { id: "1.0", name: "1.0 整数与基本运算", sp: ["1.1","1.2","1.3","1.4","1.5","1.6","1.7","1.8","1.9"] },
-            { id: "2.0", name: "2.0 分数，小数与百分比", sp: ["2.1","2.2","2.3","2.4"] },
-            { id: "3.0", name: "3.0 钱币", sp: ["3.1","3.2","3.3","3.4","3.5"] },
-            { id: "4.0", name: "4.0 时间与时刻", sp: ["4.1","4.2","4.3","4.4"] },
-            { id: "5.0", name: "5.0 度量衡", sp: ["5.1","5.2","5.3","5.4"] },
-            { id: "6.0", name: "6.0 空间", sp: ["6.1","6.2","6.3","6.4","6.5"] },
-            { id: "7.0", name: "7.0 坐标，比与比例", sp: ["7.1","7.2","7.3","7.4"] },
-            { id: "8.0", name: "8.0 数据处理", sp: ["8.1","8.2","8.3"] }
+            { id: "1.0", name: "1.0 整数与运算", sp: ["1.1.1","1.1.2","1.2.1","1.3.1","1.4.1","1.4.2","1.5.1","1.5.2","1.6.1","1.6.2","1.6.3","1.6.4","1.7.1","1.8.1","1.8.2","1.9.1","1.9.2","1.9.3"] },
+            { id: "2.0", name: "2.0 分数、小数与百分比", sp: ["2.1.1","2.2.1","2.2.2","2.2.3","2.2.4","2.3.1","2.3.2","2.4.1"] },
+            { id: "3.0", name: "3.0 钱币", sp: ["3.1.1","3.1.2","3.1.3","3.1.4","3.2.1","3.3.1","3.3.2","3.4.1","3.4.2","3.5.1"] },
+            { id: "4.0", name: "4.0 时间与时刻", sp: ["4.1.1","4.2.1","4.2.2","4.3.1","4.3.2","4.4.1"] },
+            { id: "5.0", name: "5.0 度量衡", sp: ["5.1.1","5.1.2","5.1.3","5.1.4","5.1.5","5.1.6","5.2.1","5.2.2","5.2.3","5.2.4","5.2.5","5.3.1","5.3.2","5.3.3","5.3.4","5.3.5","5.4.1"] },
+            { id: "6.0", name: "6.0 空间", sp: ["6.1.1","6.2.1","6.3.1","6.3.2","6.4.1","6.5.1"] },
+            { id: "7.0", name: "7.0 坐标和比与比例", sp: ["7.1.1","7.2.1","7.3.1","7.4.1"] },
+            { id: "8.0", name: "8.0 数据处理", sp: ["8.1.1","8.2.1","8.3.1"] }
           ]
         },
         "6": {
@@ -547,8 +514,6 @@
           ]
         }
       },
-
-      // 科学课程数据
       science: {
         "1": {
           title: "一年级科学 (Sains Tahun 1)",
@@ -647,7 +612,6 @@
     };
 
     const UNIT_INTERVENTION_TEMPLATES = {
-      // 数学干预建议模版
       "整数": [
         { title: "1. 数位与数值直观化 (Base-Ten Blocks)", icon: "fa-cubes", text: "使用十进位积木与数位表，引导 TP1-TP2 学生通过动手拼摆拆解千位、百位与十位的数值。" },
         { title: "2. 数轴跳跃计数法 (Number Line)", icon: "fa-timeline", text: "绘制可视化的数轴，指导学生通过跳跃计数 (Counting in jumps) 巩固顺序、倒序与数序规律。" },
@@ -661,7 +625,6 @@
         { title: "1. 折纸与图形分割 (Fraction Paper Folding)", icon: "fa-pie-chart", text: "通过长方形/圆形折纸和涂色活动，帮助学生建立“部分与整体”的分数直观概念。" },
         { title: "2. 等值分数墙对比 (Fraction Wall)", icon: "fa-equals", text: "使用等值分数墙工具，直观对比 1/2, 2/4, 3/6 等量关系，辅助分数的约分与通分。" }
       ],
-      // 科学干预建议模版
       "技能": [
         { title: "1. 动手操作与观察记录 (Hands-on Observation)", icon: "fa-flask", text: "引导学生通过实际观察自然现象与实验步骤，使用记录表或图画呈现观察结果。" },
         { title: "2. 变量分类与对比试验 (Variables & Control)", icon: "fa-sliders", text: "利用对比图卡协助学生区分操纵性变量、反应性变量与固定性变量。" }
@@ -699,7 +662,7 @@
     /****************************************************************
      * 2. STATE MANAGEMENT & LOCAL STORAGE
      ****************************************************************/
-    let currentSubject = "science"; // Default: science
+    let currentSubject = "science";
     let currentGrade = "3";
     let selectedStudentIds = new Set();
     let tpChartInstance = null;
@@ -916,7 +879,7 @@
     }
 
     /****************************************************************
-     * 3. TRANSIT TABLE RENDER & BATCH SP CHECK INTERACTIONS
+     * 3. TRANSIT TABLE RENDER (自适应全屏弹性列布局)
      ****************************************************************/
     function renderTransitTable() {
       const unitId = document.getElementById("unit-select").value;
@@ -927,15 +890,15 @@
 
       const students = gradeDataStore[currentGrade] || [];
 
-      // Render SP headers with Column Select All Checkbox
+      // Render SP headers with dynamic flex-1 column width
       const spContainer = document.getElementById("sp-headers-container");
       spContainer.innerHTML = `
-        <div class="flex divide-x divide-slate-200">
+        <div class="flex divide-x divide-slate-200 w-full">
           ${unitObj.sp.map(spCode => {
             const isColumnAllChecked = students.length > 0 && students.every(s => s.evaluations[unitId]?.sp[spCode]);
             return `
-              <div class="w-12 min-w-[48px] py-1.5 text-center text-xs font-semibold text-slate-600 bg-slate-50 flex-shrink-0 flex flex-col items-center gap-1 border-r border-slate-200">
-                <span>${spCode}</span>
+              <div class="flex-1 min-w-[28px] py-1.5 text-center text-xs font-semibold text-slate-600 bg-slate-50 flex flex-col items-center justify-center gap-1 border-r border-slate-200 overflow-hidden">
+                <span class="text-[10px] sm:text-[11px] leading-tight tracking-tighter truncate block w-full px-0.5" title="${spCode}">${spCode}</span>
                 <input type="checkbox" title="勾选/取消全班 ${spCode}" onchange="toggleColumnSP('${spCode}', this.checked)" ${isColumnAllChecked ? 'checked' : ''} class="w-3.5 h-3.5 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
               </div>
             `;
@@ -943,7 +906,7 @@
         </div>
       `;
 
-      // Render Student rows
+      // Render Student rows with dynamic flex-1 column width
       const tbody = document.getElementById("transit-table-body");
       tbody.innerHTML = "";
 
@@ -961,27 +924,27 @@
             <input type="checkbox" onchange="toggleStudentSelect('${stu.id}', this.checked)" ${selectedStudentIds.has(stu.id) ? 'checked' : ''} class="rounded text-indigo-600 focus:ring-indigo-500 h-4 w-4">
           </td>
           <td class="p-3 text-center sticky-col-2 border-r border-slate-200 font-mono text-xs text-slate-500 bg-white">${index + 1}</td>
-          <td class="p-3 sticky-col-3 border-r border-slate-200 font-semibold text-slate-800 bg-white whitespace-nowrap min-w-[150px] overflow-hidden text-ellipsis">${stu.name}</td>
+          <td class="p-3 sticky-col-3 border-r border-slate-200 font-semibold text-slate-800 bg-white whitespace-nowrap min-w-[140px] overflow-hidden text-ellipsis">${stu.name}</td>
           
           <td class="p-0 border-r border-slate-200">
-            <div class="flex divide-x divide-slate-200">
+            <div class="flex divide-x divide-slate-200 w-full">
               ${unitObj.sp.map(spCode => `
-                <div class="w-12 min-w-[48px] p-2 text-center flex items-center justify-center flex-shrink-0">
+                <div class="flex-1 min-w-[28px] p-2 text-center flex items-center justify-center">
                   <input type="checkbox" onchange="toggleSP('${stu.id}', '${unitId}', '${spCode}', this.checked)" ${unitEval.sp[spCode] ? 'checked' : ''} class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
                 </div>
               `).join('')}
             </div>
           </td>
 
-          <td class="p-3 text-center border-r border-slate-200 bg-indigo-50/30 whitespace-nowrap">
+          <td class="p-2 text-center border-r border-slate-200 bg-indigo-50/30 whitespace-nowrap">
             <div class="text-xs font-bold text-indigo-700">${checkedCount}/${totalSp}</div>
             <div class="w-full bg-slate-200 rounded-full h-1.5 mt-1 overflow-hidden">
               <div class="bg-indigo-600 h-1.5 rounded-full" style="width: ${percent}%"></div>
             </div>
           </td>
 
-          <td class="p-3 text-center border-r border-slate-200 bg-amber-50/30 whitespace-nowrap">
-            <select onchange="updateStudentTP('${stu.id}', '${unitId}', this.value)" class="text-xs font-bold border rounded px-2 py-1 ${getTPClass(unitEval.tp)} focus:ring-2 focus:ring-indigo-500">
+          <td class="p-2 text-center border-r border-slate-200 bg-amber-50/30 whitespace-nowrap">
+            <select onchange="updateStudentTP('${stu.id}', '${unitId}', this.value)" class="text-xs font-bold border rounded px-1.5 py-1 ${getTPClass(unitEval.tp)} focus:ring-2 focus:ring-indigo-500">
               <option value="">未设置</option>
               <option value="TP1" ${unitEval.tp==='TP1'?'selected':''}>TP 1</option>
               <option value="TP2" ${unitEval.tp==='TP2'?'selected':''}>TP 2</option>
@@ -992,7 +955,7 @@
             </select>
           </td>
 
-          <td class="p-3 text-center whitespace-nowrap">
+          <td class="p-2 text-center whitespace-nowrap">
             <button onclick="deleteSingleStudent('${stu.id}')" class="text-rose-500 hover:text-rose-700 p-1 transition" title="删除学生">
               <i class="fa-solid fa-trash-can"></i>
             </button>
@@ -1755,7 +1718,6 @@
       a.click();
     }
 
-    // Export JSON Backup File
     function exportBackupJSON() {
       const backupObject = {
         version: "3.0",
@@ -1773,7 +1735,6 @@
       showToast("备份文件已成功导出！");
     }
 
-    // Import & Restore JSON Backup File
     function importBackupJSON(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -1801,7 +1762,6 @@
               });
             }
 
-            // Reload UI Application State
             loadSettings();
             loadGradeData(currentSubject, currentGrade);
             setupUnitDropdown();
@@ -1816,7 +1776,7 @@
         } catch (err) {
           alert("读取备份文件失败，请确保您上传的是有效的 PBD JSON 备份文件。");
         } finally {
-          event.target.value = ""; // Reset file input
+          event.target.value = "";
         }
       };
       reader.readAsText(file);
